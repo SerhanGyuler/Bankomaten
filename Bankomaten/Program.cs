@@ -53,13 +53,35 @@ namespace Bankomaten
                 // Login successfull
                 while (logInSuccessful)
                 {
+                    Console.Clear();
+                    Console.WriteLine("Welcome to the ATM");
                     Console.WriteLine("1. View your accounts and balance\n2. Transfer between accounts\n3. Withdraw money\n4. Log out");
                     int userChoiceInMenu = Convert.ToInt32(Console.ReadLine());
 
                     // View Accounts and balance
                     if (userChoiceInMenu == 1)
                     {
+                       Console.Clear();
                        SeeAccounts(userIndex, accounts, logInSuccessful);
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+                    // Exit the program from menu
+                    if (userChoiceInMenu == 4)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Successfully logged out");
+                        System.Environment.Exit(1);
                     }
                 }
 
@@ -105,23 +127,28 @@ namespace Bankomaten
 
         static void SeeAccounts(int userIndex, string[][] accounts, bool logInSuccessful)
         {
-
+            // Goes through the strins in accounts untill it finds the string for the index number of users,EX userIndex = 4, Account string = 4
             foreach (string account in accounts[userIndex])
             {
                 Console.WriteLine(account);
             }
 
-            // NEED TO CHANGE THE EXIT FUNCTION, WHEN USER PRESS "ENTER" KEY IT SHOULD GO BACK TO THE MENU
-            Console.WriteLine("1. Go back to menu\n2. Exit");
-            int userChoiseToExitOrStay = Convert.ToInt32(Console.ReadLine());
+            
+            Console.WriteLine("1. Press any button to go back to the menu\n2. Press E to exit");
+            
+            // Describe the pressed key and save it
+            ConsoleKeyInfo userChoiceMyKeyPress = Console.ReadKey();
 
-            if (userChoiseToExitOrStay == 1)
-            {
-                logInSuccessful = true;
-            }
-            else
+            // If the pressed key is specified E it will run the if code
+            if (userChoiceMyKeyPress.Key  == ConsoleKey.E)
             {
                 System.Environment.Exit(1);
+                
+            }
+            // If the pressed key is not E it will run this
+            else
+            {
+                logInSuccessful = true;
             }
 
 
