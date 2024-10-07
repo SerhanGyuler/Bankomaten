@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 
 namespace Bankomaten
 {
@@ -18,7 +19,7 @@ namespace Bankomaten
                                      ["Main account:  3000", "Savings account: 2000"],
                                      ["Main account:  3000", "Savings account: 2000", "Broakrege account: 2000"],
                                      ["Main account:  3000", "Savings account: 2000", "Broakrege account: 2000", "House Account: 1234"],
-                                     ["Main account:  3000", "Savings account: 2000", "Broakrege account: 2000", "House Account: 1234", "Wife Account: 5000"] };
+                                     ["Main account:  3000", "Savings account: 2000", "Broakrege account: 2000", "House Account: 1234", "Wife Account: 5000,02"] };
 
             // Max attempts
             int logInMaxAttempts = 3;
@@ -56,7 +57,8 @@ namespace Bankomaten
                     
                     
                     Console.WriteLine("Welcome to the ATM\n1. View your accounts and balance\n2. Transfer between accounts\n3. Withdraw money\n4. Log out");
-                    int userChoiceInMenu = Convert.ToInt32(Console.ReadLine());
+                    double userChoiceInMenu = Convert.ToDouble(Console.ReadLine());
+                    
 
                     // If user choose number over the options
                     if (userChoiceInMenu > 4 || userChoiceInMenu == 0)
