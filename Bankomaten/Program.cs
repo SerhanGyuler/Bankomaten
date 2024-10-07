@@ -57,6 +57,7 @@
                         string savingsaccount = accounts[userIndex, 1];
                         string broakregeaccount = accounts[userIndex, 2];
 
+                        // NEED TO CHANGE THE EXIT FUNCTION, WHEN USER PRESS "ENTER" KEY IT SHOULD GO BACK TO THE MENU
                         Console.WriteLine($"{mainaccount}\n{savingsaccount}\n{broakregeaccount}\n1. Go back to menu\n2. Exit");
                         int userChoiseToExitOrStay = Convert.ToInt32(Console.ReadLine());
 
