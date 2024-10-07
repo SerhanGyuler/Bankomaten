@@ -53,10 +53,17 @@ namespace Bankomaten
                 // Login successfull
                 while (logInSuccessful)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Welcome to the ATM");
-                    Console.WriteLine("1. View your accounts and balance\n2. Transfer between accounts\n3. Withdraw money\n4. Log out");
+                    
+                    
+                    Console.WriteLine("Welcome to the ATM\n1. View your accounts and balance\n2. Transfer between accounts\n3. Withdraw money\n4. Log out");
                     int userChoiceInMenu = Convert.ToInt32(Console.ReadLine());
+
+                    // If user choose number over the options
+                    if (userChoiceInMenu > 4 || userChoiceInMenu == 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Invalid Choice");
+                    }
 
                     // View Accounts and balance
                     if (userChoiceInMenu == 1)
@@ -83,6 +90,8 @@ namespace Bankomaten
                         Console.WriteLine("Successfully logged out");
                         System.Environment.Exit(1);
                     }
+
+
                 }
 
                 if (!logInSuccessful)
