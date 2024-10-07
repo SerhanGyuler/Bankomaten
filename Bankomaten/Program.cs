@@ -1,4 +1,6 @@
-﻿namespace Bankomaten
+﻿using System.Security.Principal;
+
+namespace Bankomaten
 {
     internal class Program
     {
@@ -12,15 +14,19 @@
             string[] passwords = { "petter123", "serhan123", "pär123", "egzon123", "hej123" };
 
             // Accounts
-            string[,] accounts = {  { "Main account: 2000", "Savings account: 2000", "Broakrege account: 2000" },
-                                    { "Main account: 2000", "Savings account: 2000", "Broakrege account: 2000" },
-                                    { "Main account: 2000", "Savings account: 2000", "Broakrege account: 2000" },
-                                    { "Main account: 2000", "Savings account: 2000", "Broakrege account: 2000" },
-                                    { "Main account: 2000", "Savings account: 2000", "Broakrege account: 2000" } };
+            string[][] accounts = {  ["Main account:  3000"],
+                                     ["Main account:  3000", "Savings account: 2000"],
+                                     ["Main account:  3000", "Savings account: 2000", "Broakrege account: 2000"],
+                                     ["Main account:  3000", "Savings account: 2000", "Broakrege account: 2000", "House Account: 1234"],
+                                     ["Main account:  3000", "Savings account: 2000", "Broakrege account: 2000", "House Account: 1234", "Wife Account: 5000"] };
 
+            // Max attempts
             int logInMaxAttempts = 3;
+            // Count for max attempts
             int LogInAttempts = 0;
             bool logInSuccessful = false;
+
+     
 
             // Ask to login untill successfull or fail
             while (!logInSuccessful)
@@ -35,6 +41,7 @@
 
                 // Store the index of the usernames array
                 var userIndex = Array.IndexOf(usernames, inputUsername);
+                
 
                 // Remove this later, write out the index number of the array
                 Console.WriteLine(userIndex);
@@ -52,24 +59,7 @@
                     // View Accounts and balance
                     if (userChoiceInMenu == 1)
                     {
-                        // Saving the index of the accounts array for the logged in user
-                        string mainaccount = accounts[userIndex, 0];
-                        string savingsaccount = accounts[userIndex, 1];
-                        string broakregeaccount = accounts[userIndex, 2];
-
-                        // NEED TO CHANGE THE EXIT FUNCTION, WHEN USER PRESS "ENTER" KEY IT SHOULD GO BACK TO THE MENU
-                        Console.WriteLine($"{mainaccount}\n{savingsaccount}\n{broakregeaccount}\n1. Go back to menu\n2. Exit");
-                        int userChoiseToExitOrStay = Convert.ToInt32(Console.ReadLine());
-
-                        if (userChoiseToExitOrStay == 1)
-                        {
-                            logInSuccessful = true;
-                        }
-                        else
-                        {
-                            System.Environment.Exit(1);
-                        }
-
+                       SeeAccounts(userIndex, accounts, logInSuccessful);
                     }
                 }
 
@@ -111,6 +101,30 @@
             }
             // Login failed
             return false;
+        }
+
+        static void SeeAccounts(int userIndex, string[][] accounts, bool logInSuccessful)
+        {
+
+            foreach (string account in accounts[userIndex])
+            {
+                Console.WriteLine(account);
+            }
+
+            // NEED TO CHANGE THE EXIT FUNCTION, WHEN USER PRESS "ENTER" KEY IT SHOULD GO BACK TO THE MENU
+            Console.WriteLine("1. Go back to menu\n2. Exit");
+            int userChoiseToExitOrStay = Convert.ToInt32(Console.ReadLine());
+
+            if (userChoiseToExitOrStay == 1)
+            {
+                logInSuccessful = true;
+            }
+            else
+            {
+                System.Environment.Exit(1);
+            }
+
+
         }
     }
 }
