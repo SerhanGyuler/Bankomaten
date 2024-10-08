@@ -20,19 +20,18 @@ namespace Bankomaten
                                      ["Main account", "Savings account", "Broakrege account", "House Account"],
                                      ["Main account", "Savings account", "Broakrege account", "House Account", "Wife Account"] };
 
-            double[][] balances = {    [ 3000 ],
-                                       [ 3000, 2000 ],
-                                       [ 3000, 2000, 2000 ],
-                                       [ 3000, 2000, 2000, 1234 ],
-                                       [ 3000, 2000, 2000, 1234, 5000 ] };
+            double[][] balances = {    [ 1000 ],
+                                       [ 2334, 6542 ],
+                                       [ 10342, 15432, 54321 ],
+                                       [ 6543, 65464, 432423, 1234 ],
+                                       [ 3000, 2000, 2000, 1234, 54221 ] };
 
             // Max attempts
             int logInMaxAttempts = 3;
             // Count for max attempts
             int LogInAttempts = 0;
             bool logInSuccessful = false;
-
-
+                    
 
             // Ask to login untill successfull or fail
             while (!logInSuccessful)
@@ -60,7 +59,7 @@ namespace Bankomaten
                 while (logInSuccessful)
                 {
 
-
+                    Console.Clear();
                     Console.WriteLine("Welcome to the ATM\n1. View your accounts and balance\n2. Transfer between accounts\n3. Withdraw money\n4. Log out");
                     int userChoiceInMenu = Convert.ToInt32(Console.ReadLine());
 
@@ -76,8 +75,15 @@ namespace Bankomaten
                     {
                         Console.Clear();
                         SeeAccounts(userIndex, accounts, logInSuccessful, balances);
+                        KeyPressFunction(logInSuccessful);
                     }
 
+                    // Transfer Money
+                    if (userChoiceInMenu == 2)
+                    {
+                        Console.Clear();
+                        TransferMoney(userIndex, accounts, balances, logInSuccessful);
+                    }
 
 
 
@@ -106,12 +112,14 @@ namespace Bankomaten
                     // Failed to log in
                     if (LogInAttempts < logInMaxAttempts)
                     {
+                        Console.Clear();
                         Console.WriteLine("Login failed. Invalid username or password. Please try again.");
                         Console.WriteLine($"You have {logInMaxAttempts - LogInAttempts} attempts left");
                     }
                     // If max amount of attempts is fullfilled this exit the program
                     else
                     {
+                        Console.Clear();
                         Console.WriteLine("Login failed. You have reached max amount of attempts. Try again later.");
                         System.Environment.Exit(1);
                     }
@@ -146,8 +154,48 @@ namespace Bankomaten
 
             for (int i = 0; i < accounts[userIndex].Length; i++)
             {
-                Console.WriteLine($"{accounts[userIndex][i]}: {balances[userIndex][i]}");
+                Console.WriteLine($"{i + 1}.{accounts[userIndex][i]}: {balances[userIndex][i]}");
             }
+        }
+
+        static void TransferMoney(int userIndex, string[][] accounts, double[][] balances, bool logInSuccessful)
+        {
+            // Show the accounts, Ask from which account to transfer from
+            SeeAccounts(userIndex, accounts, logInSuccessful, balances);
+            Console.WriteLine($"From what account would you like to transfer from:");
+            int userAccountToTransferFrom = Convert.ToInt32( Console.ReadLine() );
+
+            // Ask user to which account to transfer to
+            Console.WriteLine($"To what account would you like to transfer to:");
+            int userAccountToTransferTo = Convert.ToInt32(Console.ReadLine());
+
+            // Amount the user wants to transfer
+            Console.WriteLine($"How much would you like to transfer:");
+            double userAmountToTransfer = Convert.ToDouble(Console.ReadLine());
+
+
+            // If user try to transfer more balance than there is:
+            if (balances[userIndex][userAccountToTransferFrom - 1] < userAmountToTransfer)
+            {
+                Console.WriteLine("Insufficient Funds");
+            }
+
+            // If user try to transfer enought funds in the account:
+            else if (balances[userIndex][userAccountToTransferFrom - 1] >= userAmountToTransfer)
+            {
+                balances[userIndex][userAccountToTransferFrom - 1] -= userAmountToTransfer;
+                
+                balances[userIndex][userAccountToTransferTo - 1] += userAmountToTransfer;
+                Console.Clear();
+                Console.WriteLine("Transfer Completed");
+                Console.WriteLine($"{accounts[userIndex][userAccountToTransferFrom - 1]}: {balances[userIndex][userAccountToTransferFrom - 1]}\n{accounts[userIndex][userAccountToTransferTo - 1]}: {balances[userIndex][userAccountToTransferTo - 1]}");
+            }
+            // Option to go back or exit
+            KeyPressFunction(logInSuccessful);
+        }
+
+        static void KeyPressFunction(bool logInSuccessful)
+        {
 
             Console.WriteLine("1. Press any button to go back to the menu\n2. Press E to exit");
 
@@ -163,10 +211,9 @@ namespace Bankomaten
             // If the pressed key is not E it will run this
             else
             {
+                Console.Clear();
                 logInSuccessful = true;
             }
-
-
         }
     }
 }
