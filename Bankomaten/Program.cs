@@ -14,11 +14,17 @@ namespace Bankomaten
             string[] passwords = { "petter123", "serhan123", "pär123", "egzon123", "hej123" };
 
             // Accounts
-            string[][] accounts = {  ["Main account:  3000"],
-                                     ["Main account:  3000", "Savings account: 2000"],
-                                     ["Main account:  3000", "Savings account: 2000", "Broakrege account: 2000"],
-                                     ["Main account:  3000", "Savings account: 2000", "Broakrege account: 2000", "House Account: 1234"],
-                                     ["Main account:  3000", "Savings account: 2000", "Broakrege account: 2000", "House Account: 1234", "Wife Account: 5000"] };
+            string[][] accounts = {  ["Main account"],
+                                     ["Main account", "Savings account"],
+                                     ["Main account", "Savings account", "Broakrege account"],
+                                     ["Main account", "Savings account", "Broakrege account", "House Account"],
+                                     ["Main account", "Savings account", "Broakrege account", "House Account", "Wife Account"] };
+
+            double[][] balances = {    [ 3000 ],
+                                       [ 3000, 2000 ],
+                                       [ 3000, 2000, 2000 ],
+                                       [ 3000, 2000, 2000, 1234 ],
+                                       [ 3000, 2000, 2000, 1234, 5000 ] };
 
             // Max attempts
             int logInMaxAttempts = 3;
@@ -26,7 +32,7 @@ namespace Bankomaten
             int LogInAttempts = 0;
             bool logInSuccessful = false;
 
-     
+
 
             // Ask to login untill successfull or fail
             while (!logInSuccessful)
@@ -41,7 +47,7 @@ namespace Bankomaten
 
                 // Store the index of the usernames array
                 var userIndex = Array.IndexOf(usernames, inputUsername);
-                
+
 
                 // Remove this later, write out the index number of the array
                 Console.WriteLine(userIndex);
@@ -53,13 +59,13 @@ namespace Bankomaten
                 // Login successfull
                 while (logInSuccessful)
                 {
-                    
-                    
+
+
                     Console.WriteLine("Welcome to the ATM\n1. View your accounts and balance\n2. Transfer between accounts\n3. Withdraw money\n4. Log out");
                     int userChoiceInMenu = Convert.ToInt32(Console.ReadLine());
 
                     // If user choose number over the options
-                    if (userChoiceInMenu > 4 || userChoiceInMenu == 0)
+                    if (userChoiceInMenu > 4 || userChoiceInMenu <= 0)
                     {
                         Console.Clear();
                         Console.WriteLine("Invalid Choice");
@@ -68,8 +74,8 @@ namespace Bankomaten
                     // View Accounts and balance
                     if (userChoiceInMenu == 1)
                     {
-                       Console.Clear();
-                       SeeAccounts(userIndex, accounts, logInSuccessful);
+                        Console.Clear();
+                        SeeAccounts(userIndex, accounts, logInSuccessful, balances);
                     }
 
 
@@ -134,25 +140,25 @@ namespace Bankomaten
             return false;
         }
 
-        static void SeeAccounts(int userIndex, string[][] accounts, bool logInSuccessful)
+        static void SeeAccounts(int userIndex, string[][] accounts, bool logInSuccessful, double[][] balances)
         {
             // Goes through the strins in accounts untill it finds the string for the index number of users,EX userIndex = 4, Account string = 4
-            foreach (string account in accounts[userIndex])
+
+            for (int i = 0; i < accounts[userIndex].Length; i++)
             {
-                Console.WriteLine(account);
+                Console.WriteLine($"{accounts[userIndex][i]}: {balances[userIndex][i]}");
             }
 
-            
             Console.WriteLine("1. Press any button to go back to the menu\n2. Press E to exit");
-            
+
             // Describe the pressed key and save it
             ConsoleKeyInfo userChoiceMyKeyPress = Console.ReadKey();
 
             // If the pressed key is specified E it will run the if code
-            if (userChoiceMyKeyPress.Key  == ConsoleKey.E)
+            if (userChoiceMyKeyPress.Key == ConsoleKey.E)
             {
                 System.Environment.Exit(1);
-                
+
             }
             // If the pressed key is not E it will run this
             else
