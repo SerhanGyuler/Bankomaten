@@ -1,13 +1,9 @@
-﻿using System.Security.Principal;
-
-namespace Bankomaten
+﻿namespace Bankomaten
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            // Welcome message
-            Console.WriteLine("Welcome to the ATM");
 
             // Username and passwords saved as arrays
             string[] usernames = { "petter", "serhan", "pär", "egzon", "hej" };
@@ -20,22 +16,24 @@ namespace Bankomaten
                                      ["Main account", "Savings account", "Broakrege account", "House Account"],
                                      ["Main account", "Savings account", "Broakrege account", "House Account", "Wife Account"] };
 
-            double[][] balances = {    [ 1000 ],
-                                       [ 2334, 6542 ],
-                                       [ 10342, 15432, 54321 ],
-                                       [ 6543, 65464, 432423, 1234 ],
-                                       [ 3000, 2000, 2000, 1234, 54221 ] };
-
+            decimal[][] balances = {    [ 1000.12m ],
+                                       [ 2334.54m, 6542m ],
+                                       [ 10342.23m, 15432m, 54321m ],
+                                       [ 6543.93m, 65464.43m, 432423m, 1234m ],
+                                       [ 3000.14m, 2000.43m, 2000m, 1234m, 54221m ] };
+            
             // Max attempts
             int logInMaxAttempts = 3;
             // Count for max attempts
             int LogInAttempts = 0;
             bool logInSuccessful = false;
-
+            bool failedLogin = false;
 
             // Ask to login untill successfull or fail
             while (!logInSuccessful)
             {
+                // Welcome message
+                Console.WriteLine("Welcome to the ATM");
                 // Ask for username
                 Console.WriteLine("Enter Username:");
                 string inputUsername = Console.ReadLine();
@@ -80,31 +78,31 @@ namespace Bankomaten
                     }
 
                     // Transfer Money
-                    if (userChoiceInMenu == 2)
+                    else if (userChoiceInMenu == 2)
                     {
                         Console.Clear();
                         TransferMoney(userIndex, accounts, balances, logInSuccessful);
                     }
 
                     // Withdraw Money
-                    if (userChoiceInMenu == 3)
+                    else if (userChoiceInMenu == 3)
                     {
                         Console.Clear();
                         WithdrawMoney(userIndex, accounts, balances, logInSuccessful, usernames, passwords, inputUsername, inputPassword);
                     }
 
                     // Exit the program from menu
-                    if (userChoiceInMenu == 4)
+                    else if (userChoiceInMenu == 4)
                     {
                         Console.Clear();
                         Console.WriteLine("Successfully logged out");
-                        System.Environment.Exit(1);
+                        logInSuccessful = false;
+                        failedLogin = true;
                     }
 
 
                 }
-
-                if (!logInSuccessful)
+                if (!failedLogin)
                 {
                     LogInAttempts++;
                     // Failed to log in
@@ -123,6 +121,7 @@ namespace Bankomaten
                     }
 
                 }
+
             }
 
 
@@ -146,7 +145,7 @@ namespace Bankomaten
             return false;
         }
 
-        static void SeeAccounts(int userIndex, string[][] accounts, bool logInSuccessful, double[][] balances)
+        static void SeeAccounts(int userIndex, string[][] accounts, bool logInSuccessful, decimal[][] balances)
         {
             // Goes through the strins in accounts untill it finds the string for the index number of users,EX userIndex = 4, Account string = 4
 
@@ -156,7 +155,7 @@ namespace Bankomaten
             }
         }
 
-        static void TransferMoney(int userIndex, string[][] accounts, double[][] balances, bool logInSuccessful)
+        static void TransferMoney(int userIndex, string[][] accounts, decimal[][] balances, bool logInSuccessful)
         {
             // Show the accounts, Ask from which account to transfer from
             SeeAccounts(userIndex, accounts, logInSuccessful, balances);
@@ -169,7 +168,8 @@ namespace Bankomaten
 
             // Amount the user wants to transfer
             Console.WriteLine($"How much would you like to transfer:");
-            double userAmountToTransfer = Convert.ToDouble(Console.ReadLine());
+            decimal userAmountToTransfer = Convert.ToDecimal(Console.ReadLine());
+
 
 
             // If user try to transfer more balance than there is:
@@ -191,7 +191,7 @@ namespace Bankomaten
             // Option to go back or exit
             KeyPressFunction(logInSuccessful);
         }
-        static void WithdrawMoney(int userIndex, string[][] accounts, double[][] balances, bool logInSuccessful, string[] usernames, string[] passwords, string inputUsername, string inputPassword)
+        static void WithdrawMoney(int userIndex, string[][] accounts, decimal[][] balances, bool logInSuccessful, string[] usernames, string[] passwords, string inputUsername, string inputPassword)
         {
             // Show the accounts, Ask from which account to withdraw from
             SeeAccounts(userIndex, accounts, logInSuccessful, balances);
@@ -200,7 +200,7 @@ namespace Bankomaten
 
             // Amount the user wants to withdraw
             Console.WriteLine($"How much would you like to withdraw:");
-            double userAmountToWithdraw = Convert.ToDouble(Console.ReadLine());
+            decimal userAmountToWithdraw = Convert.ToDecimal(Console.ReadLine());
 
             // Ask the user for password to withdraw
             Console.WriteLine($"Please enter your password to withdraw:");
@@ -212,9 +212,9 @@ namespace Bankomaten
                 // Option to go back or exit
                 KeyPressFunction(logInSuccessful);
                 return;
-                
+
             }
-            
+
             // If user try to withdraw more money than there is:
             if (balances[userIndex][userAccountToWithdrawFrom - 1] < userAmountToWithdraw)
             {
@@ -227,11 +227,11 @@ namespace Bankomaten
             balances[userIndex][userAccountToWithdrawFrom - 1] -= userAmountToWithdraw;
 
             Console.Clear();
-            Console.WriteLine("Withdraw Completed\nDon't forget your card!");
+            Console.WriteLine($"Withdraw Completed\nDon't forget your card!\n{accounts[userIndex][userAccountToWithdrawFrom - 1]}: {balances[userIndex][userAccountToWithdrawFrom - 1]}");
 
             // Option to go back or exit
             KeyPressFunction(logInSuccessful);
-      
+
 
         }
         static void KeyPressFunction(bool logInSuccessful)
