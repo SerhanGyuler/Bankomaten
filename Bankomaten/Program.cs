@@ -31,7 +31,7 @@ namespace Bankomaten
             // Count for max attempts
             int LogInAttempts = 0;
             bool logInSuccessful = false;
-                    
+
 
             // Ask to login untill successfull or fail
             while (!logInSuccessful)
@@ -66,8 +66,9 @@ namespace Bankomaten
                     // If user choose number over the options
                     if (userChoiceInMenu > 4 || userChoiceInMenu <= 0)
                     {
-                        Console.Clear();
                         Console.WriteLine("Invalid Choice");
+                        KeyPressFunction(logInSuccessful);
+
                     }
 
                     // View Accounts and balance
@@ -85,15 +86,12 @@ namespace Bankomaten
                         TransferMoney(userIndex, accounts, balances, logInSuccessful);
                     }
 
-
-
-
-
-
-
-
-
-
+                    // Withdraw Money
+                    if (userChoiceInMenu == 3)
+                    {
+                        Console.Clear();
+                        WithdrawMoney(userIndex, accounts, balances, logInSuccessful, usernames, passwords, inputUsername, inputPassword);
+                    }
 
                     // Exit the program from menu
                     if (userChoiceInMenu == 4)
@@ -163,7 +161,7 @@ namespace Bankomaten
             // Show the accounts, Ask from which account to transfer from
             SeeAccounts(userIndex, accounts, logInSuccessful, balances);
             Console.WriteLine($"From what account would you like to transfer from:");
-            int userAccountToTransferFrom = Convert.ToInt32( Console.ReadLine() );
+            int userAccountToTransferFrom = Convert.ToInt32(Console.ReadLine());
 
             // Ask user to which account to transfer to
             Console.WriteLine($"To what account would you like to transfer to:");
@@ -184,7 +182,7 @@ namespace Bankomaten
             else if (balances[userIndex][userAccountToTransferFrom - 1] >= userAmountToTransfer)
             {
                 balances[userIndex][userAccountToTransferFrom - 1] -= userAmountToTransfer;
-                
+
                 balances[userIndex][userAccountToTransferTo - 1] += userAmountToTransfer;
                 Console.Clear();
                 Console.WriteLine("Transfer Completed");
@@ -193,7 +191,49 @@ namespace Bankomaten
             // Option to go back or exit
             KeyPressFunction(logInSuccessful);
         }
+        static void WithdrawMoney(int userIndex, string[][] accounts, double[][] balances, bool logInSuccessful, string[] usernames, string[] passwords, string inputUsername, string inputPassword)
+        {
+            // Show the accounts, Ask from which account to withdraw from
+            SeeAccounts(userIndex, accounts, logInSuccessful, balances);
+            Console.WriteLine($"From what account would you like to withdraw money from:");
+            int userAccountToWithdrawFrom = Convert.ToInt32(Console.ReadLine());
 
+            // Amount the user wants to withdraw
+            Console.WriteLine($"How much would you like to withdraw:");
+            double userAmountToWithdraw = Convert.ToDouble(Console.ReadLine());
+
+            // Ask the user for password to withdraw
+            Console.WriteLine($"Please enter your password to withdraw:");
+            string userPasswordForWithdraw = Console.ReadLine();
+
+            if (!LoginCheck(usernames, passwords, inputUsername, userPasswordForWithdraw))
+            {
+                Console.WriteLine("Wrong Password!");
+                // Option to go back or exit
+                KeyPressFunction(logInSuccessful);
+                return;
+                
+            }
+            
+            // If user try to withdraw more money than there is:
+            if (balances[userIndex][userAccountToWithdrawFrom - 1] < userAmountToWithdraw)
+            {
+                Console.WriteLine("Insufficient Funds");
+                KeyPressFunction(logInSuccessful);
+                return;
+            }
+
+            // Takes away the amount the user wants to withdraw
+            balances[userIndex][userAccountToWithdrawFrom - 1] -= userAmountToWithdraw;
+
+            Console.Clear();
+            Console.WriteLine("Withdraw Completed\nDon't forget your card!");
+
+            // Option to go back or exit
+            KeyPressFunction(logInSuccessful);
+      
+
+        }
         static void KeyPressFunction(bool logInSuccessful)
         {
 
