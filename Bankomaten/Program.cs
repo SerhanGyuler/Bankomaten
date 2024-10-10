@@ -16,7 +16,7 @@
                                      ["Main account", "Savings account", "Broakrege account", "House Account"],
                                      ["Main account", "Savings account", "Broakrege account", "House Account", "Wife Account"] };
 
-            decimal[][] balances = {    [ 1000.12m ],
+            decimal[][] balances = {   [ 1000.12m ],
                                        [ 2334.54m, 6542m ],
                                        [ 10342.23m, 15432m, 54321m ],
                                        [ 6543.93m, 65464.43m, 432423m, 1234m ],
@@ -54,8 +54,12 @@
 
                     Console.Clear();
                     Console.WriteLine("Welcome to the ATM\n1. View your accounts and balance\n2. Transfer between accounts\n3. Withdraw money\n4. Log out");
-                    int userChoiceInMenu = Convert.ToInt32(Console.ReadLine());
 
+                    // Check if user input is a string and if it is it goes to default statement
+                    if (!int.TryParse(Console.ReadLine(), out int userChoiceInMenu))
+                    {
+
+                    }
                     switch (userChoiceInMenu)
                     {
                         // View Accounts and balance
