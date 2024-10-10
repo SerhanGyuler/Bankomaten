@@ -21,7 +21,7 @@
                                        [ 10342.23m, 15432m, 54321m ],
                                        [ 6543.93m, 65464.43m, 432423m, 1234m ],
                                        [ 3000.14m, 2000.43m, 2000m, 1234m, 54221m ] };
-            
+
             // Max attempts
             int logInMaxAttempts = 3;
             // Count for max attempts
@@ -61,46 +61,42 @@
                     Console.WriteLine("Welcome to the ATM\n1. View your accounts and balance\n2. Transfer between accounts\n3. Withdraw money\n4. Log out");
                     int userChoiceInMenu = Convert.ToInt32(Console.ReadLine());
 
-                    // If user choose number over the options
-                    if (userChoiceInMenu > 4 || userChoiceInMenu <= 0)
+                    switch (userChoiceInMenu)
                     {
-                        Console.WriteLine("Invalid Choice");
-                        KeyPressFunction(logInSuccessful);
+                        // View Accounts and balance
+                        case 1:
+                            Console.Clear();
+                            SeeAccounts(userIndex, accounts, logInSuccessful, balances);
+                            KeyPressFunction(logInSuccessful);
+                            break;
+
+                        // Transfer Money
+                        case 2:
+                            Console.Clear();
+                            TransferMoney(userIndex, accounts, balances, logInSuccessful);
+                            break;
+
+                        // Withdraw Money
+                        case 3:
+                            Console.Clear();
+                            WithdrawMoney(userIndex, accounts, balances, logInSuccessful, usernames, passwords, inputUsername, inputPassword);
+                            break;
+
+                        // Exit the program from menu
+                        case 4:
+                            Console.Clear();
+                            Console.WriteLine("Successfully logged out");
+                            logInSuccessful = false;
+                            failedLogin = true;
+                            break;
+
+                        // If user choose number over the options
+                        default:
+                            Console.WriteLine("Invalid Choice");
+                            KeyPressFunction(logInSuccessful);
+                            break;
 
                     }
-
-                    // View Accounts and balance
-                    if (userChoiceInMenu == 1)
-                    {
-                        Console.Clear();
-                        SeeAccounts(userIndex, accounts, logInSuccessful, balances);
-                        KeyPressFunction(logInSuccessful);
-                    }
-
-                    // Transfer Money
-                    else if (userChoiceInMenu == 2)
-                    {
-                        Console.Clear();
-                        TransferMoney(userIndex, accounts, balances, logInSuccessful);
-                    }
-
-                    // Withdraw Money
-                    else if (userChoiceInMenu == 3)
-                    {
-                        Console.Clear();
-                        WithdrawMoney(userIndex, accounts, balances, logInSuccessful, usernames, passwords, inputUsername, inputPassword);
-                    }
-
-                    // Exit the program from menu
-                    else if (userChoiceInMenu == 4)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Successfully logged out");
-                        logInSuccessful = false;
-                        failedLogin = true;
-                    }
-
-
                 }
                 if (!failedLogin)
                 {
