@@ -45,11 +45,6 @@
                 // Store the index of the usernames array
                 var userIndex = Array.IndexOf(usernames, inputUsername);
 
-
-                // Remove this later, write out the index number of the array
-                Console.WriteLine(userIndex);
-
-
                 // Call login check method
                 logInSuccessful = LoginCheck(usernames, passwords, inputUsername, inputPassword);
 
@@ -94,6 +89,7 @@
                         default:
                             Console.WriteLine("Invalid Choice");
                             KeyPressFunction(logInSuccessful);
+                            failedLogin = false;
                             break;
 
                     }
