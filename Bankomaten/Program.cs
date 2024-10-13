@@ -10,13 +10,13 @@
             string[] passwords = { "petter123", "serhan123", "pär123", "egzon123", "hej123" };
 
             // Accounts
-            string[][] accounts = {  ["Main account"],
+            string[][] accounts = {  ["Main account", "Savings account"],
                                      ["Main account", "Savings account"],
                                      ["Main account", "Savings account", "Broakrege account"],
                                      ["Main account", "Savings account", "Broakrege account", "House Account"],
                                      ["Main account", "Savings account", "Broakrege account", "House Account", "Wife Account"] };
 
-            decimal[][] balances = {   [ 1000.12m ],
+            decimal[][] balances = {   [ 1000.12m, 432.04m ],
                                        [ 2334.54m, 6542m ],
                                        [ 10342.23m, 15432m, 54321m ],
                                        [ 6543.93m, 65464.43m, 432423m, 1234m ],
